@@ -80,15 +80,17 @@ bot.onText(/\/mycomplaints/, (msg, match) => {
  const j =  ref.child("sites").once('value').
  then(snapshot => {
   values  = Object.values(snapshot.val());
-  val1 = values.filter(v => {
-    v.name != 'Kavita';
-  });
-  console.log(val1)
+  // val1 = values.filter(v => {
+  //   v.name != 'Kavita';
+  // });
+  //console.log({val1})
   let str = "";
-  val1.forEach(el => {
-    el => str += el.description;
+  values.forEach(el => {
+    console.log({el});
+   //  str = el.description? str+el.description + ",  ": "";
+     bot.sendMessage(msg.chat.id, el.description)
   });  
-  console.log(val1);
+  //console.log(val1);
   bot.sendMessage(msg.chat.id, `details ===> ${str}`)
  }
   );
@@ -100,7 +102,7 @@ bot.on("contact",(msg)=>{
   complaint.contact = msge.contact  
 })
 bot.on('message', (msg) => {
-  console.log(msg.text);
+  console.log(complaint);
   if (msg.text === 'mycomplaints') return;
   console.log({complaint});
   if (complaint.category && !complaint.description) {
@@ -127,6 +129,11 @@ bot.on('message', (msg) => {
       chatId: msg.chat.id,
      
     });
+    complaint.category = "",
+    complaint.description = "",
+    complaint.contact = "",
+    complaint.timesloat= "",
+    complaint.key = ""
     bot.sendMessage(msg.chat.id, 'your complaint registered.');
     
     return;
